@@ -3,16 +3,21 @@ package com.GUI;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 
 import com.Controller.VentanaInicialController;
@@ -30,33 +35,19 @@ public class VentanaInicial extends JFrame{
     JButton ayuda = new JButton("Ayuda");
     JButton listap = new JButton("listaPokemons");
     JButton aceptar = new JButton("Aceptar");
+    JTable table;
+    DefaultTableModel model;
 
     //desplegable con los pokemons
     JComboBox<String> comboBox;
 
     public VentanaInicial() {
 
-        Container cp = this.getContentPane();
-        cp.setLayout(new BorderLayout());
 
 
         //botones
 
-        ayuda = new JButton("Ayuda");
-        listap = new JButton("listaPokemons");
-        aceptar = new JButton("Aceptar");
-
-        comboBox = new JComboBox<>(listapokemons.toArray(new String[0]));
-
-        JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout());
-
-        panel.add(ayuda);
-        panel.add(listap);
-        panel.add(aceptar);
-        panel.add(comboBox);
-
-        cp.add(panel, BorderLayout.SOUTH);
+       initComponents();
 
         // Crear la tabla
         createJTable();
@@ -66,6 +57,51 @@ public class VentanaInicial extends JFrame{
         setSize(800, 800);
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    private void initComponents() {
+        Container cp = getContentPane();
+        cp.setLayout(new FlowLayout());
+
+        ayuda = new JButton("Ayuda");
+        listap = new JButton("listaPokemons");
+        aceptar = new JButton("Aceptar");
+
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+
+        panel.add(ayuda);
+        panel.add(listap);
+        panel.add(aceptar);
+
+        aceptar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onAceptarButtonClick();
+            }
+        });
+
+
+        cp.add(panel, BorderLayout.SOUTH);
+
+        // Crear un ComboBox editable con autocompletado
+        comboBox = new JComboBox<>(listapokemons.toArray(new String[0]));
+        comboBox.setEditable(true);
+        cp.add(comboBox);
+    }
+
+    private void filterComboBoxItems(String filterText) {
+        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboBox.getModel();
+        model.removeAllElements();
+
+        for (String item : listapokemons) {
+            if (item.toLowerCase().startsWith(filterText)) {
+                model.addElement(item);
+            }
+        }
+
+        comboBox.setPopupVisible(model.getSize() > 0);
     }
 
 
@@ -88,7 +124,15 @@ public class VentanaInicial extends JFrame{
             cont++;
         }
 
-        JTable table = new JTable(data, columnNames);
+        model = new DefaultTableModel(data, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hacer que todas las celdas sean no editables
+            }
+        };
+
+        // Crear la tabla con el modelo no editable
+        table = new JTable(model);
 
 
         // Agregar la tabla a un JScrollPane para que tenga barras de desplazamiento
@@ -96,40 +140,34 @@ public class VentanaInicial extends JFrame{
 
         // Agregar el JScrollPane a la ventana
         add(scrollPane);
-
-
-
-
     }
 
+    private void onAceptarButtonClick() {
+        // Obtener el número de la casilla seleccionada (región en la tabla)
+        int selectedRow = table.getSelectedRow(); // Fila seleccionada (0-indexed)
+        int selectedColumn = table.getSelectedColumn(); // Columna seleccionada (0-indexed)
 
-    
+        // Convertir la posición de la tabla a un número de casilla (1-9)
+        int numCasilla = selectedRow + (selectedColumn * 3) - 2;
 
+        // Obtener el nombre del Pokémon seleccionado en el ComboBox
+        String pokemonSeleccionado = (String) comboBox.getSelectedItem();
 
+        // Llamar a la función comprobar con los valores obtenidos
+        boolean resultado = controller.comprobar(juego, pokemonSeleccionado, numCasilla);
 
+        // Mostrar el resultado en un mensaje (solo para propósitos de demostración)
+        JOptionPane.showMessageDialog(this,
+                "¿El Pokémon " + pokemonSeleccionado + " está en la casilla " + numCasilla + "? " +
+                        (resultado ? "Sí" : "No"));
 
+        if (resultado) {
+            model.setValueAt(pokemonSeleccionado, selectedRow, selectedColumn);
 
-
-
-
-
-
-
-
-
-
-
-  
-   /*  public static void main(String[] args) {
-        var ctx = new SpringApplicationBuilder(VentanaInicial.class)
-                .headless(false).web(WebApplicationType.NONE).run(args);
-
-        EventQueue.invokeLater(() -> {
-
-            var ex = ctx.getBean(VentanaInicial.class);
-            ex.setVisible(true);
-        });
-    } */
+        // Actualizar la vista de la tabla
+        table.repaint(); 
+        }
+    }
 
 }
 

@@ -108,6 +108,7 @@ public class VentanaInicialController {
 
                juego = convertJsonToMap(response);
 
+               System.out.println(juego);
 
                 bufferedReader.close();
                 return juego;
@@ -212,5 +213,12 @@ public class VentanaInicialController {
         return condicionesRegion;
     }
 
-    
+    public boolean comprobar(HashMap<Integer , List<String>> juego, String pokemon, int num){
+        for (String poke : juego.get(num)) {
+            if (poke.equals(pokemon)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
