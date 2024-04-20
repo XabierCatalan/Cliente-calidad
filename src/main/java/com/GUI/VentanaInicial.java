@@ -1,16 +1,12 @@
 package com.GUI;
 
-import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-
-import jakarta.annotation.PostConstruct;
-
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
-import java.awt.List;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -25,7 +21,10 @@ public class VentanaInicial extends JFrame{
     static VentanaInicialController controller = new VentanaInicialController();
 
     //lista de nombres de pokemons
+    HashMap<Integer , List<String>> juego = controller.crearJuego();
     ArrayList<String> listapokemons = (ArrayList<String>) controller.getlistapokemons();
+    ArrayList<String> condicionesTipo = (ArrayList<String>) controller.getCondicionesTipo();
+    ArrayList<String> condicionesRegion = (ArrayList<String>) controller.getCondicionesRegion();
 
     //Botones
     JButton ayuda = new JButton("Ayuda");
@@ -72,17 +71,23 @@ public class VentanaInicial extends JFrame{
 
     public void createJTable() {
         // Datos de ejemplo para la tabla
-        String[][] data = {
-            {"ALOLA","", "", ""},
-            {"KANTO","", "", ""},
-            {"TESELIA","", "", ""},
-            {"SINNOH","", "", ""}
-        };
+
+        String[][] data = new String[condicionesRegion.size()][condicionesTipo.size()+1];
+
+        for (int i = 0; i < condicionesRegion.size(); i++) {
+            data[i][0] = condicionesRegion.get(i); 
+        }
 
         // Nombres de las columnas
-        String[] columnNames = {"", "FUEGO", "PLANTA", "AGUA"};
+        String[] columnNames = new String[condicionesTipo.size()+1];
+        Arrays.fill(columnNames, "");
+        int cont = 1;
 
-        // Crear la tabla con los datos y nombres de columnas
+        for (String t : condicionesTipo) {
+            columnNames[cont]=t;
+            cont++;
+        }
+
         JTable table = new JTable(data, columnNames);
 
 

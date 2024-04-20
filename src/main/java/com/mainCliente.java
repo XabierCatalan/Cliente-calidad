@@ -1,6 +1,5 @@
 package com;
 
-import com.Controller.VentanaInicialController;
 import com.GUI.VentanaInicial;
 
 public class mainCliente {
