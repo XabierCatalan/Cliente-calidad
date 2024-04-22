@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 
 import com.Controller.VentanaInicialController;
+import com.GUI.VentanaAyuda;
 
 public class VentanaInicial extends JFrame{
     static VentanaInicialController controller = new VentanaInicialController();
@@ -40,6 +41,9 @@ public class VentanaInicial extends JFrame{
 
     //desplegable con los pokemons
     JComboBox<String> comboBox;
+
+    //ventanas
+    VentanaAyuda ventanaAyuda = new VentanaAyuda();
 
     public VentanaInicial() {
 
@@ -89,6 +93,15 @@ public class VentanaInicial extends JFrame{
         comboBox = new JComboBox<>(listapokemons.toArray(new String[0]));
         comboBox.setEditable(true);
         cp.add(comboBox);
+
+        ayuda.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                ventanaAyuda.setVisible(true);
+            }
+        });
+
     }
 
     private void filterComboBoxItems(String filterText) {
