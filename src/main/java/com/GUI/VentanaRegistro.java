@@ -25,10 +25,12 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 
-import com.Controller.VentanaInicialController;
+import com.Controller.SesionesController;
 import com.GUI.*;
 
 public class VentanaRegistro extends JFrame{
+
+    SesionesController controller = new SesionesController();
 
     //el id es autoincremental
     JLabel correo;
@@ -76,6 +78,23 @@ public class VentanaRegistro extends JFrame{
         setSize(250, 250);
         setLocationRelativeTo(null);
         setVisible(true);
+
+        aceptar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String Correo = correoText.getText();
+                String Contra = contraText.getText();
+                boolean registrado = controller.register(Correo, Contra);
+
+                System.out.println("Respuesta del metodo registrado del register controller " + registrado);
+                if (registrado) {
+                    JOptionPane.showMessageDialog(null, "Usuario registrado");
+                    VentanaInicial Mi = new VentanaInicial();
+                    Mi.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Usuario ya existente");
+                }
+            }
+        });
     }
     
 }
