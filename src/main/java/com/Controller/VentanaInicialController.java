@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class VentanaJuegoController {
+public class VentanaInicialController {
     private static final String BASE_URL = "http://localhost:8080";
     
 

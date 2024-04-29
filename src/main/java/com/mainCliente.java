@@ -1,13 +1,13 @@
 package com;
 
-import com.GUI.VentanaJuego;
+import com.GUI.VentanaInicial;
 
 public class mainCliente {
 
-    //static VentanaJuegoController controller = new VentanaJuegoController();
+    //static VentanaInicialController controller = new VentanaInicialController();
 
     public static void main(String[] args) {
-        VentanaJuego ventana = new VentanaJuego();
+        VentanaInicial ventana = new VentanaInicial();
        
     }
 }

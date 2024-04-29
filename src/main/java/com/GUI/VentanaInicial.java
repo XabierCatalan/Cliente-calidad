@@ -20,11 +20,11 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 
-import com.Controller.VentanaJuegoController;
+import com.Controller.VentanaInicialController;
 import com.GUI.VentanaAyuda;
 
-public class VentanaJuego extends JFrame{
-    static VentanaJuegoController controller = new VentanaJuegoController();
+public class VentanaInicial extends JFrame{
+    static VentanaInicialController controller = new VentanaInicialController();
 
     //lista de nombres de pokemons
     HashMap<Integer , List<String>> juego = controller.crearJuego();
@@ -45,7 +45,7 @@ public class VentanaJuego extends JFrame{
     //ventanas
     VentanaAyuda ventanaAyuda = new VentanaAyuda();
 
-    public VentanaJuego() {
+    public VentanaInicial() {
 
 
 
