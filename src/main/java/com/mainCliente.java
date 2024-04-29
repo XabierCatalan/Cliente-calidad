@@ -8,8 +8,8 @@ public class mainCliente {
 
     public static void main(String[] args) {
         //VentanaInicial ventana = new VentanaInicial();
-       VentanaInicial Mi = new VentanaInicial();
-         Mi.setVisible(true);
+        VentanaInicial Mi = new VentanaInicial();
+        Mi.setVisible(true);
         
     }
 }
