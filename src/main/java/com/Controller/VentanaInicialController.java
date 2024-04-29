@@ -213,6 +213,8 @@ public class VentanaInicialController {
         return condicionesRegion;
     }
 
+    
+
     public boolean comprobar(HashMap<Integer , List<String>> juego, String pokemon, int num){
         for (String poke : juego.get(num)) {
             if (poke.equals(pokemon)) {

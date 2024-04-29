@@ -26,72 +26,69 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 
 import com.Controller.VentanaInicialController;
-import com.GUI.*;
+import com.GUI.VentanaAyuda;
 
-public class VentanaInicioSesion extends JFrame{
-    JLabel correo;
-    JLabel contra;
+public class VentanaMenuInicial extends JFrame{
+    JLabel pokedoku;
 
-    JTextField correoText;
-    JTextField contraText;
+    JButton Log_in;
+    JButton Sign_in;
 
-    JButton aceptar;
 
-    JPanel Grid;
+    JPanel panelGlobal;
+    JPanel Botones;
 
-    public VentanaInicioSesion() {
+
+    public VentanaMenuInicial() {
 
         Container cp = getContentPane();
         cp.setLayout(new BorderLayout());
 
+        pokedoku = new JLabel("Pokedoku");
 
-        correo = new JLabel("Correo: ");
-        contra = new JLabel("Contraseña: ");
+        Log_in = new JButton("Log in");
+        Sign_in = new JButton("Sign in");
 
-        correoText = new JTextField();
-        contraText = new JTextField();
+        Botones = new JPanel();
+        Botones.setLayout(new GridLayout(1,2));
+        Botones.add(Log_in);
+        Botones.add(Sign_in);
 
-        aceptar = new JButton("Aceptar");
-
-        Grid = new JPanel();
-        Grid.setLayout(new GridLayout(5,1));
-        Grid.add(correo);
-        Grid.add(correoText);
-        Grid.add(contra);
-        Grid.add(contraText);
+        panelGlobal = new JPanel();
+        panelGlobal.setLayout(new GridLayout(2,1));
+        panelGlobal.add(pokedoku);
+        panelGlobal.add(Botones);
+        
 
 
-        Grid.add(aceptar);
 
-        cp.add(Grid, BorderLayout.CENTER);
+        cp.add(panelGlobal, BorderLayout.CENTER);
 
 
         setTitle("Inicio de Sesion");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setSize(250, 250);
         setLocationRelativeTo(null);
-        setVisible(false);
+        setVisible(true);
 
-        aceptar.addActionListener(new ActionListener() {
+        Log_in.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                
-            }
-        });
-
-        aceptar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-                String correo = correoText.getText();
-                String contra = contraText.getText();
-
-                
-
-                VentanaInicial ventanaInicial = new VentanaInicial();
-                ventanaInicial.setVisible(true);
+                VentanaInicioSesion ventanaInicioSesion = new VentanaInicioSesion();
+                ventanaInicioSesion.setVisible(true);
                 setVisible(false);
             }
         });
+
+        Sign_in.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                VentanaRegistro ventanaRegistro = new VentanaRegistro();
+                ventanaRegistro.setVisible(true);
+                setVisible(false);
+            }
+        });
+    
+        
     }
 
-   
+    
 }

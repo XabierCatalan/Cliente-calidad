@@ -28,9 +28,14 @@ import javax.swing.JScrollPane;
 import com.Controller.VentanaInicialController;
 import com.GUI.*;
 
-public class VentanaInicioSesion extends JFrame{
+public class VentanaRegistro extends JFrame{
+
+    //el id es autoincremental
     JLabel correo;
     JLabel contra;
+
+    //ponemos que el nivel por defecto sea 1 y que otro admin te tenaga que cambiar el nivel
+    int nivel = 0;
 
     JTextField correoText;
     JTextField contraText;
@@ -39,11 +44,12 @@ public class VentanaInicioSesion extends JFrame{
 
     JPanel Grid;
 
-    public VentanaInicioSesion() {
+
+
+    public VentanaRegistro() {
 
         Container cp = getContentPane();
         cp.setLayout(new BorderLayout());
-
 
         correo = new JLabel("Correo: ");
         contra = new JLabel("Contraseña: ");
@@ -51,7 +57,7 @@ public class VentanaInicioSesion extends JFrame{
         correoText = new JTextField();
         contraText = new JTextField();
 
-        aceptar = new JButton("Aceptar");
+        aceptar = new JButton("Sign in");
 
         Grid = new JPanel();
         Grid.setLayout(new GridLayout(5,1));
@@ -65,33 +71,11 @@ public class VentanaInicioSesion extends JFrame{
 
         cp.add(Grid, BorderLayout.CENTER);
 
-
-        setTitle("Inicio de Sesion");
+        setTitle("Registro de Usuario");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setSize(250, 250);
         setLocationRelativeTo(null);
-        setVisible(false);
-
-        aceptar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                
-            }
-        });
-
-        aceptar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-                String correo = correoText.getText();
-                String contra = contraText.getText();
-
-                
-
-                VentanaInicial ventanaInicial = new VentanaInicial();
-                ventanaInicial.setVisible(true);
-                setVisible(false);
-            }
-        });
+        setVisible(true);
     }
-
-   
+    
 }

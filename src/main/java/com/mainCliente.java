@@ -8,7 +8,8 @@ public class mainCliente {
 
     public static void main(String[] args) {
         //VentanaInicial ventana = new VentanaInicial();
-       VentanaInicioSesion inicioSesion = new VentanaInicioSesion();
+       VentanaInicial Mi = new VentanaInicial();
+         Mi.setVisible(true);
         
     }
 }
