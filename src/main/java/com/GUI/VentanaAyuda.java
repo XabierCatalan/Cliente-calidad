@@ -23,7 +23,6 @@ import javax.swing.JScrollPane;
 
 import java.awt.*;
 
-import com.Controller.VentanaInicialController;
 
 
 public class VentanaAyuda extends JFrame{
