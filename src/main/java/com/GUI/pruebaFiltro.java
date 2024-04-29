@@ -31,7 +31,6 @@ public class pruebaFiltro extends JFrame {
 
         // JTextField para filtrar
         JTextField filterField = new JTextField();
-        comboBox.get
         filterField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
