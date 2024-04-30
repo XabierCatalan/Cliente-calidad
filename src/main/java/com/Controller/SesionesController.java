@@ -41,7 +41,7 @@ public class SesionesController {
                 // Registration successful
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String response = bufferedReader.readLine();
-                System.out.println(response);
+                System.out.println("Respuesta del Server" + response);
                 if (response.equals("Usuario registrado")) {
                     bufferedReader.close();
 
@@ -64,7 +64,7 @@ public class SesionesController {
         return false;
     }
 
-    public boolean iniciarSesion(String Correo, String Contra) {
+    public String iniciarSesion(String Correo, String Contra) {
         
         String ini = BASE_URL + "/iniciarSesion?correo=" + Correo + "&contra=" + Contra;
         System.out.println("Iniciando Sesion: " + ini);
@@ -75,11 +75,7 @@ public class SesionesController {
             // Open a connection to the server
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
-            //connection.setRequestProperty("Content-Type", "application/json");
-            //connection.setDoOutput(true);
-
-            // Send the JSON data to the server
-           // connection.getOutputStream().write(userJson.getBytes());
+           
 
             // Get the response from the server
             int responseCode = connection.getResponseCode();
@@ -88,28 +84,36 @@ public class SesionesController {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String response = bufferedReader.readLine();
                 System.out.println(response);
-                if (response.equals("true")) {
-                    bufferedReader.close();
-                    System.out.println("inicio de sesion exitoso");
-
-                    return true;
-                } else {
-                    System.out.println("inicio de sesion fallido");
+                if (response.equals("Usuario no existe")) {
 
                     bufferedReader.close();
-
-                    return false;
+                    System.out.println("El correo y la contraseña son incorrectos");
+                    String respuesta = "NUll";
+                    return respuesta;
+                } else if(response.equals("Jugador")) {
+                    System.out.println("inicio de sesion de jugador");
+                    String respuesta = "Jugador";
+                    bufferedReader.close();
+                    return respuesta;
+                    
+                } else if(response.equals("Admin")) {
+                    System.out.println("inicio de sesion de Admin");
+                    String respuesta = "Admin";
+                    bufferedReader.close();
+                    return respuesta;
                     
                 }
             } else {
                 // Registration failed
                 System.out.println("Log in failed. Response code: " + responseCode);
-                return false;
+                String respuesta = "Log in failed. Response code: " + responseCode;
+                return respuesta;
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
+        String respuesta = "NULL-2";
+        return respuesta;
     }
 }

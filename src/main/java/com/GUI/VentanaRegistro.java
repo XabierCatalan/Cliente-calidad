@@ -88,7 +88,7 @@ public class VentanaRegistro extends JFrame{
                 System.out.println("Respuesta del metodo registrado del register controller " + registrado);
                 if (registrado) {
                     JOptionPane.showMessageDialog(null, "Usuario registrado");
-                    VentanaInicial Mi = new VentanaInicial();
+                    VentanaInicioSesion Mi = new VentanaInicioSesion();
                     Mi.setVisible(true);
                     setVisible(false);
                 } else {

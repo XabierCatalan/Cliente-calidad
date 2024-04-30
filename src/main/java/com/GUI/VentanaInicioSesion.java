@@ -80,15 +80,22 @@ public class VentanaInicioSesion extends JFrame{
 
                 String correo = correoText.getText();
                 String contra = contraText.getText();
-                boolean ini = controller.iniciarSesion(correo, contra);
+                String ini = controller.iniciarSesion(correo, contra);
+                System.out.println("Respuesta:" + ini);
 
-                if (ini) {
-                    JOptionPane.showMessageDialog(null, "Inicio de sesion exitoso");
+                if (ini == "NUll") {
+                    JOptionPane.showMessageDialog(null, "El correo y la contraseña son incorrectos");
+                    
+                } else if(ini == "Jugador") {
                     VentanaInicial Vi = new VentanaInicial();
                     Vi.setVisible(true);
                     setVisible(false);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Inicio de sesion fallido");
+                    
+                } else if(ini == "Admin") {
+                    VentanaAdmin VA = new VentanaAdmin();
+                    VA.setVisible(true);
+                    setVisible(false);
+                    
                 }
                 
 
