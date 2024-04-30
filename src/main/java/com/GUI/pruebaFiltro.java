@@ -66,10 +66,10 @@ public class pruebaFiltro extends JFrame {
         comboBox.setModel(new DefaultComboBoxModel<>(filteredItems.toArray(new String[0])));
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new pruebaFiltro().setVisible(true);
         });
-    }
+    }*/
 }
 

@@ -77,7 +77,7 @@ public class VentanaRegistro extends JFrame{
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setSize(250, 250);
         setLocationRelativeTo(null);
-        setVisible(true);
+        setVisible(false);
 
         aceptar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -90,6 +90,7 @@ public class VentanaRegistro extends JFrame{
                     JOptionPane.showMessageDialog(null, "Usuario registrado");
                     VentanaInicial Mi = new VentanaInicial();
                     Mi.setVisible(true);
+                    setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(null, "Usuario ya existente");
                 }

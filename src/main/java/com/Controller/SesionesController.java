@@ -63,4 +63,53 @@ public class SesionesController {
         }
         return false;
     }
+
+    public boolean iniciarSesion(String Correo, String Contra) {
+        
+        String ini = BASE_URL + "/iniciarSesion?correo=" + Correo + "&contra=" + Contra;
+        System.out.println("Iniciando Sesion: " + ini);
+        try {
+            
+            URL url = new URL(ini);
+            
+            // Open a connection to the server
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            //connection.setRequestProperty("Content-Type", "application/json");
+            //connection.setDoOutput(true);
+
+            // Send the JSON data to the server
+           // connection.getOutputStream().write(userJson.getBytes());
+
+            // Get the response from the server
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // inicio se sesion successful
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String response = bufferedReader.readLine();
+                System.out.println(response);
+                if (response.equals("true")) {
+                    bufferedReader.close();
+                    System.out.println("inicio de sesion exitoso");
+
+                    return true;
+                } else {
+                    System.out.println("inicio de sesion fallido");
+
+                    bufferedReader.close();
+
+                    return false;
+                    
+                }
+            } else {
+                // Registration failed
+                System.out.println("Log in failed. Response code: " + responseCode);
+                return false;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

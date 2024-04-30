@@ -25,10 +25,13 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 
-import com.Controller.VentanaInicialController;
+import com.Controller.SesionesController;
 import com.GUI.*;
 
 public class VentanaInicioSesion extends JFrame{
+
+    SesionesController controller = new SesionesController();
+
     JLabel correo;
     JLabel contra;
 
@@ -74,21 +77,22 @@ public class VentanaInicioSesion extends JFrame{
 
         aceptar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                
-            }
-        });
-
-        aceptar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
 
                 String correo = correoText.getText();
                 String contra = contraText.getText();
+                boolean ini = controller.iniciarSesion(correo, contra);
 
+                if (ini) {
+                    JOptionPane.showMessageDialog(null, "Inicio de sesion exitoso");
+                    VentanaInicial Vi = new VentanaInicial();
+                    Vi.setVisible(true);
+                    setVisible(false);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Inicio de sesion fallido");
+                }
                 
 
-                VentanaInicial ventanaInicial = new VentanaInicial();
-                ventanaInicial.setVisible(true);
-                setVisible(false);
+               
             }
         });
     }
