@@ -25,26 +25,54 @@ import java.awt.*;
 public class VentanaAyuda extends JFrame{
     
     JLabel info;
+    JLabel info1;
+    JLabel info2;
+    JLabel info3;
+    JLabel info4;
+
+    JLabel regla;
+    JLabel regla1;
+    JLabel regla2;
+    JLabel regla3;
+    JLabel regla4;
+    
+
     JPanel panel;
 
     public VentanaAyuda() {
 
         Container cp = getContentPane();
-        cp.setLayout(new FlowLayout());
+        cp.setLayout(new BorderLayout());
 
-        info = new JLabel("Este es un juego de lógica en el que tienes que adivinar los pokemons que se esconde en las casillas. Para ello, se te proporcionan una serie de pistas que te ayudarán a descubrirlo. ¡Buena suerte!");
-        
-        info.setHorizontalAlignment(JLabel.CENTER);
-        info.setVerticalAlignment(JLabel.CENTER);
-        info.setPreferredSize(new Dimension(300, 300));
+        info = new JLabel("  DESCRICIÓN DEL JUEGO"); 
+        info1 = new JLabel("   Este es un juego de lógica en el que tienes"); 
+        info2 = new JLabel("   que adivinar los pokemons que se esconden"); 
+        info3 = new JLabel("   en las casillas. Para ello, se te proporcionan"); 
+        info4 = new JLabel("   una serie de condiciones que debes cumplir."); 
+
+        regla = new JLabel("  REGLAS DEL JUEGO"); 
+        regla1 = new JLabel("   1- Se te proporcionan una serie de condiciones"); 
+        regla2 = new JLabel("   2- El pokemon que se esconde debe cumplir todas las condiciones  "); 
+        regla3 = new JLabel("   3- Tienes un numero de intentos limitados"); 
+        regla4 = new JLabel("   4- Si se te acaban los intentos PERDISTE!"); 
+
 
         
 
         panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        panel.add(info, BorderLayout.CENTER);
+        panel.setLayout(new GridLayout(10,1));
+        panel.add(info);
+        panel.add(info1);
+        panel.add(info2);
+        panel.add(info3);
+        panel.add(info4);
+        panel.add(regla);
+        panel.add(regla1);
+        panel.add(regla2);
+        panel.add(regla3);
+        panel.add(regla4);
 
-        cp.add(panel);
+        cp.add(panel, BorderLayout.CENTER);
 
 
         setTitle("Ayuda");

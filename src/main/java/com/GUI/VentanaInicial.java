@@ -14,6 +14,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -38,12 +39,15 @@ public class VentanaInicial extends JFrame{
     JButton aceptar = new JButton("Aceptar");
     JTable table;
     DefaultTableModel model;
+    JScrollPane scrollPane;
 
     //desplegable con los pokemons
     JComboBox<String> comboBox;
 
     //ventanas
     VentanaAyuda ventanaAyuda = new VentanaAyuda();
+
+    JLabel creditos;
 
     public VentanaInicial() {
 
@@ -53,8 +57,9 @@ public class VentanaInicial extends JFrame{
 
        initComponents();
 
-        // Crear la tabla
-        createJTable();
+       
+
+
         
         setTitle("Pokedoku");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,6 +76,13 @@ public class VentanaInicial extends JFrame{
         listap = new JButton("listaPokemons");
         aceptar = new JButton("Aceptar");
 
+         // Crear la tabla
+         createJTable();
+
+        // Crear un ComboBox editable con autocompletado
+        comboBox = new JComboBox<>(listapokemons.toArray(new String[0]));
+        comboBox.setEditable(true);
+
 
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
@@ -78,6 +90,10 @@ public class VentanaInicial extends JFrame{
         panel.add(ayuda);
         panel.add(listap);
         panel.add(aceptar);
+        panel.add(comboBox);
+
+
+        creditos = new JLabel("Grupo PSC-12: Oscar Perez, Xabier Catalan, Unai Basterretxea, Jon Ander Olivera");
 
         aceptar.addActionListener(new ActionListener() {
             @Override
@@ -87,12 +103,9 @@ public class VentanaInicial extends JFrame{
         });
 
 
-        cp.add(panel, BorderLayout.SOUTH);
-
-        // Crear un ComboBox editable con autocompletado
-        comboBox = new JComboBox<>(listapokemons.toArray(new String[0]));
-        comboBox.setEditable(true);
-        cp.add(comboBox);
+        cp.add(panel, BorderLayout.NORTH);
+        cp.add(scrollPane, BorderLayout.CENTER);
+        cp.add(creditos, BorderLayout.SOUTH);
 
         ayuda.addActionListener(new ActionListener() {
             @Override
@@ -149,7 +162,7 @@ public class VentanaInicial extends JFrame{
 
 
         // Agregar la tabla a un JScrollPane para que tenga barras de desplazamiento
-        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane = new JScrollPane(table);
 
         // Agregar el JScrollPane a la ventana
         add(scrollPane);
