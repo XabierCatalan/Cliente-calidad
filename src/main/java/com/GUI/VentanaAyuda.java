@@ -1,8 +1,5 @@
 package com.GUI;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -55,5 +52,26 @@ public class VentanaAyuda extends JFrame{
         setSize(400, 400);
         setLocationRelativeTo(null);
         setVisible(false);
+        //agregarBotonAyuda();
+
+    }
+
+    private void agregarBotonAyuda() {
+        // Crear botón de ayuda
+        JButton ayudaButton = new JButton("?");
+        ayudaButton.setPreferredSize(new Dimension(20, 20));
+        ayudaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Mensaje de ayuda aquí.");
+            }
+        });
+
+        // Agregar el botón de ayuda a la esquina superior derecha
+        JPanel panelSuperiorDerecho = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panelSuperiorDerecho.add(ayudaButton);
+
+        // Agregar el panel al contenedor principal
+        panel.add(panelSuperiorDerecho, BorderLayout.NORTH);
     }
 }
