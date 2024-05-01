@@ -47,28 +47,7 @@ public class VentanaRegistro extends JFrame{
     JPanel Grid;
 
 
-    public boolean validarDatos(String correo, String contrasena) {
-        // Verificar que el correo y la contraseña no estén vacíos
-        if (correo.isEmpty() || contrasena.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Por favor, ingresa correo y contraseña.");
-            return false;
-        }
-        
-        // Validar el formato del correo electrónico
-        if (!correo.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
-            JOptionPane.showMessageDialog(null, "Formato de correo electrónico inválido.");
-            return false;
-        }
     
-        // Verificar que la contraseña tenga al menos 6 caracteres
-        if (contrasena.length() < 1) {
-            JOptionPane.showMessageDialog(null, "La contraseña debe tener al menos 6 caracteres.");
-            return false;
-        }
-        
-        // Si pasa todas las validaciones, retorna true
-        return true;
-    }
 
     public VentanaRegistro() {
 
@@ -105,10 +84,11 @@ public class VentanaRegistro extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 String Correo = correoText.getText();
                 String Contra = contraText.getText();
+                if (validarDatos(Correo, Contra)) {
+
                 boolean registrado = controller.register(Correo, Contra);
 
                 System.out.println("Respuesta del metodo registrado del register controller " + registrado);
-                //if (validarDatos(Correo, Contra)) {
 
                 if (registrado) {
                     JOptionPane.showMessageDialog(null, "Usuario registrado");
@@ -119,9 +99,33 @@ public class VentanaRegistro extends JFrame{
                     JOptionPane.showMessageDialog(null, "Usuario ya existente");
                 }
 
-            //}
+            }
             }
         });
+    }
+
+
+    public boolean validarDatos(String correo, String contrasena) {
+        // Verificar que el correo y la contraseña no estén vacíos
+        if (correo.isEmpty() || contrasena.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, ingresa correo y contraseña.");
+            return false;
+        }
+        
+        // Validar el formato del correo electrónico
+        if (!correo.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
+            JOptionPane.showMessageDialog(null, "Formato de correo electrónico inválido.");
+            return false;
+        }
+    
+        // Verificar que la contraseña tenga al menos 6 caracteres
+        if (contrasena.length() < 6) {
+            JOptionPane.showMessageDialog(null, "La contraseña debe tener al menos 6 caracteres.");
+            return false;
+        }
+        
+        // Si pasa todas las validaciones, retorna true
+        return true;
     }
     
 }

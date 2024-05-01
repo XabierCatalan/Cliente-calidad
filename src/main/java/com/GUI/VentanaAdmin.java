@@ -210,7 +210,16 @@ public class VentanaAdmin extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Open a dialog to input region details
-                String nombre = RegionText.getText();
+                String nombre = PokemonText.getText();
+                String tipo1 = (String) TipoPokemon1.getSelectedItem();
+                String tipo2 = (String) TipoPokemon2.getSelectedItem();
+                String region = (String) TipoRegion.getSelectedItem();
+               
+                if (nombre != null && !nombre.isEmpty() && tipo1 != null && !tipo1.isEmpty() &&
+                        tipo2 != null && !tipo2.isEmpty() && region != null && !region.isEmpty()) {
+                    controller.postPokemon(nombre, tipo1, tipo2, region);
+                }
+                
                 
     
         }});

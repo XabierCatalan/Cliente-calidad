@@ -153,7 +153,7 @@ public class VentanaInicialController {
         return listaRegiones;
     }
 
-//POST REGION
+// REGION
     public boolean postRegion(String region) {
         String apartado = BASE_URL + "/InsertRegion?region=" + region;
 
@@ -194,7 +194,7 @@ public class VentanaInicialController {
         return false;
     }
 
-//POST TIPO
+// TIPO
 public boolean postTipo(String tipo) {
     String apartado = BASE_URL + "/InsertTipo?tipo=" + tipo;
 
@@ -235,7 +235,7 @@ public boolean postTipo(String tipo) {
     return false;
 }
 
-//POST TIPO
+// TIPO
 public boolean postPokemon(String tipo) {
     String apartado = BASE_URL + "/InsertTipo?tipo=" + tipo;
 
@@ -316,6 +316,47 @@ public boolean postUsuario(String Correo, String Contra, String nivel) {
     }
     return false;
 }
+
+//POKEMON
+public boolean postPokemon(String nombre, String tipo1, String tipo2, String region) {
+    String apartado = BASE_URL + "/InsertPokemon?nombre=" + nombre + "&tipo1=" + tipo1 + "&tipo2=" + tipo2 + "&region=" + region;
+
+    try {
+
+        URL url = new URL(apartado);
+
+        // Abrir una conexión al servidor
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+
+        // Obtener la respuesta del servidor
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String response = bufferedReader.readLine();
+            System.out.println("Respuesta del Server" + response);
+            if (response.equals("Pokemon Insertado")) {
+                bufferedReader.close();
+
+                return true;
+            } else {
+                bufferedReader.close();
+
+                return false;
+                
+            }
+        } else {
+            // Registro fallido
+            System.out.println("Registro fallido. Código de respuesta: " + responseCode);
+            return false;
+        }
+
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
 
 //CONVERTIR JSON A ARRAYLIST
     public static ArrayList<String> convertJsonToArrayList(String jsonString) throws IOException {
