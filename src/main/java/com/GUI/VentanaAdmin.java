@@ -184,6 +184,8 @@ public class VentanaAdmin extends JFrame{
                     TipoRegion.setModel(model);
                    //que se actualice el Jcombobox
                 }
+
+                RegionText.setText("");
         
         }});
 
@@ -202,6 +204,8 @@ public class VentanaAdmin extends JFrame{
 
                    //que se actualice el Jcombobox
                 }
+
+                TipoPokemonText.setText("");
                 
         
         }});
@@ -219,6 +223,8 @@ public class VentanaAdmin extends JFrame{
                         tipo2 != null && !tipo2.isEmpty() && region != null && !region.isEmpty()) {
                     controller.postPokemon(nombre, tipo1, tipo2, region);
                 }
+
+                PokemonText.setText("");
                 
                 
     
@@ -234,6 +240,9 @@ public class VentanaAdmin extends JFrame{
                 if (cor != null && !cor.isEmpty() && contra != null && !contra.isEmpty() && niv != null && !niv.isEmpty()) {
                     controller.postUsuario(cor, contra, niv);
                 }
+
+                correo.setText("");
+                contraseña.setText("");
                 
 
         }});
