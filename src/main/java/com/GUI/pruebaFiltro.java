@@ -56,6 +56,11 @@ public class pruebaFiltro extends JFrame {
         add(panel, BorderLayout.NORTH);
     }
 
+    /*public void agregarElemento(String elemento) {
+        originalItems.add(elemento);
+        comboBox.addItem(elemento);
+    }*/
+
     private void filterItems(String text) {
         List<String> filteredItems = new ArrayList<>();
         for (String item : originalItems) {
