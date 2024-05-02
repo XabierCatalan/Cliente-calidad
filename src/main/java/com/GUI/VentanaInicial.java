@@ -1,6 +1,8 @@
 package com.GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -18,7 +20,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import org.springframework.data.geo.Point;
+
 import javax.swing.JScrollPane;
 
 import com.Controller.VentanaInicialController;
@@ -79,6 +85,26 @@ public class VentanaInicial extends JFrame{
          // Crear la tabla
          createJTable();
 
+        /*table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                c.setBackground(Color.WHITE); // Establecer el color de fondo predeterminado
+                if (table.isCellSelected(row, column)) {
+                    c.setBackground(Color.YELLOW); // Cambiar el color de fondo cuando la celda está seleccionada
+                } else {
+                    java.awt.Point point = table.getMousePosition();
+                    int columnAtPoint = table.columnAtPoint(point);
+                    int rowAtPoint = table.rowAtPoint(point);
+                    if (rowAtPoint == row && columnAtPoint == column) {
+                        c.setBackground(Color.YELLOW); // Cambiar el color de fondo cuando el ratón está sobre la celda
+                    }
+                }
+                return c;
+            }
+        });*/
+        
+         
         // Crear un ComboBox editable con autocompletado
         comboBox = new JComboBox<>(listapokemons.toArray(new String[0]));
         comboBox.setEditable(true);
@@ -116,7 +142,7 @@ public class VentanaInicial extends JFrame{
         });
 
     }
-
+    
     private void filterComboBoxItems(String filterText) {
         DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboBox.getModel();
         model.removeAllElements();
@@ -149,7 +175,7 @@ public class VentanaInicial extends JFrame{
             columnNames[cont]=t;
             cont++;
         }
-
+        
         model = new DefaultTableModel(data, columnNames) {
             @Override
             public boolean isCellEditable(int row, int column) {

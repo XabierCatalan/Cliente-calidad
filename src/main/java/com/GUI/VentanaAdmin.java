@@ -251,6 +251,233 @@ public class VentanaAdmin extends JFrame{
 }
 
 
+
+
+/*package com.GUI;
+
+import com.Controller.VentanaInicialController;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+public class VentanaAdmin extends JFrame {
+
+    private static final VentanaInicialController controller = new VentanaInicialController();
+    private final ArrayList<String> listaTipos = new ArrayList<>(controller.getlistaTipos());
+    private final ArrayList<String> listaRegiones = new ArrayList<>(controller.getlistaRegiones());
+
+    // Componentes de la interfaz
+    private final JPanel panelRegion;
+    private final JPanel panelTipoPokemon;
+    private final JPanel panelPokemon;
+    private final JPanel panelUsuario;
+
+    private final JTextField RegionText;
+    private final JTextField TipoPokemonText;
+    private final JTextField PokemonText;
+    private final JTextField correo;
+    private final JTextField contraseña;
+    private final JTextField nivel;
+
+    private final JComboBox<String> TipoPokemon1;
+    private final JComboBox<String> TipoPokemon2;
+    private final JComboBox<String> TipoRegion;
+
+    public VentanaAdmin() {
+
+        // Configuración del contenedor principal
+        Container cp = getContentPane();
+        cp.setLayout(new BorderLayout());
+
+        // Inicialización de paneles
+        panelRegion = createPanel("Apartado de Region", "Nombre de la Region", "Add Region", listaRegiones);
+        panelTipoPokemon = createPanel("Apartado de Tipos", "Nombre del Tipo", "Add Tipo Pokemon", listaTipos);
+        panelPokemon = createPokemonPanel("Apartado de pokemons");
+        panelUsuario = createUserPanel("Apartado de Usuarios");
+
+        // Añadir paneles al contenedor principal
+        cp.add(panelRegion, BorderLayout.NORTH);
+        cp.add(panelTipoPokemon, BorderLayout.WEST);
+        cp.add(panelPokemon, BorderLayout.CENTER);
+        cp.add(panelUsuario, BorderLayout.EAST);
+
+        // Configuración de la ventana
+        setTitle("Panel de Administrador");
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setSize(600, 500);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    // Método para crear paneles comunes
+    private JPanel createPanel(String title, String label, String buttonLabel, ArrayList<String> comboBoxItems) {
+        JPanel panel = new JPanel(new GridLayout(4, 1));
+        JLabel titleLabel = new JLabel(title);
+        JLabel label1 = new JLabel(label);
+        JTextField textField = new JTextField();
+        JButton button = new JButton(buttonLabel);
+        JComboBox<String> comboBox = new JComboBox<>(comboBoxItems.toArray(new String[0]));
+        comboBox.setEditable(false);
+
+        // Añadir componentes al panel
+        panel.add(titleLabel);
+        panel.add(label1);
+        panel.add(textField);
+        panel.add(button);
+
+        // Acción del botón
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String input = textField.getText();
+                if (!input.isEmpty()) {
+                    // Realizar la acción correspondiente (ejemplo: agregar elemento a lista)
+                    // Luego actualizar la lista de elementos del JComboBox
+                    comboBoxItems.add(input);
+                    comboBox.setModel(new DefaultComboBoxModel<>(comboBoxItems.toArray(new String[0])));
+                }
+                textField.setText(""); // Limpiar el campo de texto
+            }
+        });
+
+        return panel;
+    }
+
+    // Método para crear el panel de Pokemons
+    private JPanel createPokemonPanel(String title) {
+        JPanel panel = new JPanel(new GridLayout(10, 1));
+        JLabel titleLabel = new JLabel(title);
+        JLabel pokemonLabel = new JLabel("Nombre del Pokemon");
+        JLabel tipo1Label = new JLabel("Tipo 1");
+        JLabel tipo2Label = new JLabel("Tipo 2");
+        JLabel regionLabel = new JLabel("Region");
+        JTextField pokemonTextField = new JTextField();
+        JButton addButton = new JButton("Add Pokemon");
+        TipoPokemon1 = new JComboBox<>(listaTipos.toArray(new String[0]));
+        TipoPokemon2 = new JComboBox<>(listaTipos.toArray(new String[0]));
+        TipoRegion = new JComboBox<>(listaRegiones.toArray(new String[0]));
+
+        // Añadir componentes al panel
+        panel.add(titleLabel);
+        panel.add(pokemonLabel);
+        panel.add(pokemonTextField);
+        panel.add(tipo1Label);
+        panel.add(TipoPokemon1);
+        panel.add(tipo2Label);
+        panel.add(TipoPokemon2);
+        panel.add(regionLabel);
+        panel.add(TipoRegion);
+        panel.add(addButton);
+
+        // Acción del botón
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nombre = pokemonTextField.getText();
+                String tipo1 = (String) TipoPokemon1.getSelectedItem();
+                String tipo2 = (String) TipoPokemon2.getSelectedItem();
+                String region = (String) TipoRegion.getSelectedItem();
+
+                if (!nombre.isEmpty() && tipo1 != null && !tipo1.isEmpty() &&
+                        tipo2 != null && !tipo2.isEmpty() && region != null && !region.isEmpty()) {
+                    // Realizar la acción correspondiente (ejemplo: agregar Pokemon)
+                }
+                pokemonTextField.setText(""); // Limpiar el campo de texto
+            }
+        });
+
+        return panel;
+    }
+
+    // Método para crear el panel de Usuarios
+    private JPanel createUserPanel(String title) {
+        JPanel panel = new JPanel(new GridLayout(8, 1));
+        JLabel titleLabel = new JLabel(title);
+        JLabel correoLabel = new JLabel("Correo");
+        JLabel contraseñaLabel = new JLabel("Contraseña");
+        JLabel nivelLabel = new JLabel("Nivel");
+        JButton addButton = new JButton("Add Usuario");
+        correo = new JTextField();
+        contraseña = new JTextField();
+        nivel = new JTextField();
+
+        // Añadir componentes al panel
+        panel.add(titleLabel);
+        panel.add(correoLabel);
+        panel.add(correo);
+        panel.add(contraseñaLabel);
+        panel.add(contraseña);
+        panel.add(nivelLabel);
+        panel.add(nivel);
+        panel.add(addButton);
+
+        // Acción del botón
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String cor = correo.getText();
+                String contra = contraseña.getText();
+                String niv = nivel.getText();
+                if (!cor.isEmpty() && !contra.isEmpty() && !niv.isEmpty()) {
+                    // Realizar la acción correspondiente (ejemplo: agregar Usuario)
+                }
+                correo.setText(""); // Limpiar el campo de texto
+                contraseña.setText("");
+                nivel.setText("");
+            }
+        });
+
+        return panel;
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new VentanaAdmin();
+            }
+        });
+    }
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 
  public VentanaAdmin() {
@@ -342,3 +569,11 @@ public class VentanaAdmin extends JFrame{
 
 
 
+
+
+
+
+
+
+
+    
