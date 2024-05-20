@@ -33,6 +33,10 @@ import com.GUI.VentanaAyuda;
 public class VentanaInicial extends JFrame{
     static VentanaInicialController controller = new VentanaInicialController();
 
+    int numAciertos = 0;
+    int anchoTabla = 3;
+    int altoTabla = 3;
+
     //lista de nombres de pokemons
     HashMap<Integer , List<String>> juego = controller.crearJuego();
     ArrayList<String> listapokemons = (ArrayList<String>) controller.getlistapokemons();
@@ -43,6 +47,9 @@ public class VentanaInicial extends JFrame{
     JButton ayuda = new JButton("Ayuda");
     JButton listap = new JButton("listaPokemons");
     JButton aceptar = new JButton("Aceptar");
+    JButton botonSi;
+    JButton botonNo;
+    JButton rendirse;
     JTable table;
     DefaultTableModel model;
     JScrollPane scrollPane;
@@ -57,15 +64,7 @@ public class VentanaInicial extends JFrame{
 
     public VentanaInicial() {
 
-
-
-        //botones
-
        initComponents();
-
-       
-
-
         
         setTitle("Pokedoku");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -81,28 +80,12 @@ public class VentanaInicial extends JFrame{
         ayuda = new JButton("Ayuda");
         listap = new JButton("listaPokemons");
         aceptar = new JButton("Aceptar");
+        botonSi = new JButton("Sí");
+        botonNo = new JButton("No");
+        rendirse = new JButton("Me rindo");
 
          // Crear la tabla
          createJTable();
-
-        /*table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                c.setBackground(Color.WHITE); // Establecer el color de fondo predeterminado
-                if (table.isCellSelected(row, column)) {
-                    c.setBackground(Color.YELLOW); // Cambiar el color de fondo cuando la celda está seleccionada
-                } else {
-                    java.awt.Point point = table.getMousePosition();
-                    int columnAtPoint = table.columnAtPoint(point);
-                    int rowAtPoint = table.rowAtPoint(point);
-                    if (rowAtPoint == row && columnAtPoint == column) {
-                        c.setBackground(Color.YELLOW); // Cambiar el color de fondo cuando el ratón está sobre la celda
-                    }
-                }
-                return c;
-            }
-        });*/
         
          
         // Crear un ComboBox editable con autocompletado
@@ -116,6 +99,10 @@ public class VentanaInicial extends JFrame{
         panel.add(ayuda);
         panel.add(listap);
         panel.add(aceptar);
+        panel.add(botonSi);
+        panel.add(botonNo);
+        botonSi.setVisible(false);
+        botonNo.setVisible(false);
         panel.add(comboBox);
 
 
@@ -128,6 +115,18 @@ public class VentanaInicial extends JFrame{
             }
         });
 
+        rendirse.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            //    for (int numCol : model.getColumnCount()+1) {
+            //        for (int numFila : model.getRowCount()) {
+            //            int num = numFila + (numCol * 3) - 2;
+             //           model.setValueAt(juego.get(num).get(0), numFila, numCol);
+             //       }
+             //   }
+            }          
+        });
 
         cp.add(panel, BorderLayout.NORTH);
         cp.add(scrollPane, BorderLayout.CENTER);
@@ -159,8 +158,10 @@ public class VentanaInicial extends JFrame{
 
     public void createJTable() {
         // Datos de ejemplo para la tabla
+        anchoTabla = condicionesTipo.size();
+        altoTabla = condicionesRegion.size();
 
-        String[][] data = new String[condicionesRegion.size()][condicionesTipo.size()+1];
+        String[][] data = new String[altoTabla][anchoTabla+1];
 
         for (int i = 0; i < condicionesRegion.size(); i++) {
             data[i][0] = condicionesRegion.get(i); 
@@ -205,6 +206,8 @@ public class VentanaInicial extends JFrame{
         // Obtener el nombre del Pokémon seleccionado en el ComboBox
         String pokemonSeleccionado = (String) comboBox.getSelectedItem();
 
+        //Estas seguro?
+
         // Llamar a la función comprobar con los valores obtenidos
         boolean resultado = controller.comprobar(juego, pokemonSeleccionado, numCasilla);
 
@@ -215,6 +218,13 @@ public class VentanaInicial extends JFrame{
 
         if (resultado) {
             model.setValueAt(pokemonSeleccionado, selectedRow, selectedColumn);
+            numAciertos++;
+            int numTotal=anchoTabla*altoTabla;
+
+            if (numAciertos >= (numTotal)) {
+                JOptionPane.showMessageDialog(this,
+                "Has llenado los " + numTotal + " huecos de la Tabla \n HAS COMPLETADO EL POKEDOKU");
+            }
 
         // Actualizar la vista de la tabla
         table.repaint(); 
