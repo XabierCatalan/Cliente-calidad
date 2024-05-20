@@ -8,7 +8,7 @@ public class mainCliente {
     //static VentanaInicialController controller = new VentanaInicialController();
 
     public static void main(String[] args) {
-        VentanaInicial admin = new VentanaInicial();
+        VentanaAdmin admin = new VentanaAdmin();
         admin.setVisible(true);
  
     }

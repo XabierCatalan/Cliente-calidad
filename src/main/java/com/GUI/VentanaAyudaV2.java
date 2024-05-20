@@ -22,7 +22,7 @@ import java.awt.*;
 
 
 
-public class VentanaAyuda extends JFrame{
+public class VentanaAyudaV2 extends JFrame{
     
     JLabel info;
     JLabel info1;
@@ -39,7 +39,7 @@ public class VentanaAyuda extends JFrame{
 
     JPanel panel;
 
-    public VentanaAyuda() {
+    public VentanaAyudaV2() {
 
         Container cp = getContentPane();
         cp.setLayout(new BorderLayout());

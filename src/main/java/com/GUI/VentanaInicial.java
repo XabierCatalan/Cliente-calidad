@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ import org.springframework.data.geo.Point;
 import javax.swing.JScrollPane;
 
 import com.Controller.VentanaInicialController;
-import com.GUI.VentanaAyuda;
+import com.GUI.VentanaAyudaV2;
 
 public class VentanaInicial extends JFrame{
     static VentanaInicialController controller = new VentanaInicialController();
@@ -36,6 +37,9 @@ public class VentanaInicial extends JFrame{
     int numAciertos = 0;
     int anchoTabla = 3;
     int altoTabla = 3;
+    int numFallos = 0;
+
+    boolean perder = true;
 
     //lista de nombres de pokemons
     HashMap<Integer , List<String>> juego = controller.crearJuego();
@@ -47,20 +51,23 @@ public class VentanaInicial extends JFrame{
     JButton ayuda = new JButton("Ayuda");
     JButton listap = new JButton("listaPokemons");
     JButton aceptar = new JButton("Aceptar");
-    JButton botonSi;
-    JButton botonNo;
+   
     JButton rendirse;
     JTable table;
     DefaultTableModel model;
     JScrollPane scrollPane;
 
+    JPanel panel;
+    JPanel parteAbajo;
+
     //desplegable con los pokemons
     JComboBox<String> comboBox;
 
     //ventanas
-    VentanaAyuda ventanaAyuda = new VentanaAyuda();
+    VentanaAyudaV2 VentanaAyudaV2 = new VentanaAyudaV2();
 
     JLabel creditos;
+    JLabel fallos;
 
     public VentanaInicial() {
 
@@ -80,12 +87,11 @@ public class VentanaInicial extends JFrame{
         ayuda = new JButton("Ayuda");
         listap = new JButton("listaPokemons");
         aceptar = new JButton("Aceptar");
-        botonSi = new JButton("Sí");
-        botonNo = new JButton("No");
+       
         rendirse = new JButton("Me rindo");
 
          // Crear la tabla
-         createJTable();
+        createJTable();
         
          
         // Crear un ComboBox editable con autocompletado
@@ -93,25 +99,37 @@ public class VentanaInicial extends JFrame{
         comboBox.setEditable(true);
 
 
-        JPanel panel = new JPanel();
+        panel = new JPanel();
         panel.setLayout(new FlowLayout());
 
         panel.add(ayuda);
         panel.add(listap);
         panel.add(aceptar);
-        panel.add(botonSi);
-        panel.add(botonNo);
-        botonSi.setVisible(false);
-        botonNo.setVisible(false);
+        panel.add(rendirse);
+       
         panel.add(comboBox);
 
-
+        parteAbajo = new JPanel();
+        parteAbajo.setLayout(new GridLayout(2,1));
+        fallos = new JLabel("Fallos: " + numFallos);
+        parteAbajo.add(fallos);
+    
         creditos = new JLabel("Grupo PSC-12: Oscar Perez, Xabier Catalan, Unai Basterretxea, Jon Ander Olivera");
+        parteAbajo.add(creditos);
 
         aceptar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                onAceptarButtonClick();
+
+                if (perder) {
+                    int response = JOptionPane.showConfirmDialog(null, "¿ESTAS SEGURO?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    boolean result = (response == JOptionPane.YES_OPTION);
+    
+                    if (result) {
+                        onAceptarButtonClick();
+                    }
+                }
+                
             }
         });
 
@@ -119,24 +137,38 @@ public class VentanaInicial extends JFrame{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-            //    for (int numCol : model.getColumnCount()+1) {
-            //        for (int numFila : model.getRowCount()) {
-            //            int num = numFila + (numCol * 3) - 2;
-             //           model.setValueAt(juego.get(num).get(0), numFila, numCol);
-             //       }
-             //   }
-            }          
+
+                int response = JOptionPane.showConfirmDialog(null, "¿ESTAS SEGURO DE QUE QUIERES RENDIRTE?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                boolean result = (response == JOptionPane.YES_OPTION);
+
+                if (result) {
+                    JTable table = (JTable) scrollPane.getViewport().getView();
+                    DefaultTableModel model = (DefaultTableModel) table.getModel();
+    
+                    for (int row = 0; row < model.getRowCount(); row++) {
+                        for (int col = 1; col < model.getColumnCount(); col++) {
+                            int numCasilla = row + (col * 3) - 2;
+                            model.setValueAt(juego.get(numCasilla).get(0), row, col);
+                        }
+                    }
+
+                    JOptionPane.showMessageDialog(null, "Has perdido, el juego ha terminado");
+                    perder = false;
+                }
+                
+           }          
         });
 
         cp.add(panel, BorderLayout.NORTH);
         cp.add(scrollPane, BorderLayout.CENTER);
-        cp.add(creditos, BorderLayout.SOUTH);
+
+        cp.add(parteAbajo, BorderLayout.SOUTH);
 
         ayuda.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-                ventanaAyuda.setVisible(true);
+                VentanaAyudaV2.setVisible(true);
             }
         });
 
@@ -191,45 +223,55 @@ public class VentanaInicial extends JFrame{
         // Agregar la tabla a un JScrollPane para que tenga barras de desplazamiento
         scrollPane = new JScrollPane(table);
 
-        // Agregar el JScrollPane a la ventana
-        add(scrollPane);
+        
+        
     }
 
     private void onAceptarButtonClick() {
         // Obtener el número de la casilla seleccionada (región en la tabla)
-        int selectedRow = table.getSelectedRow(); // Fila seleccionada (0-indexed)
-        int selectedColumn = table.getSelectedColumn(); // Columna seleccionada (0-indexed)
 
-        // Convertir la posición de la tabla a un número de casilla (1-9)
-        int numCasilla = selectedRow + (selectedColumn * 3) - 2;
+        if (perder) {
+            
+        
 
-        // Obtener el nombre del Pokémon seleccionado en el ComboBox
-        String pokemonSeleccionado = (String) comboBox.getSelectedItem();
+            int selectedRow = table.getSelectedRow(); // Fila seleccionada (0-indexed)
+            int selectedColumn = table.getSelectedColumn(); // Columna seleccionada (0-indexed)
 
-        //Estas seguro?
+            // Convertir la posición de la tabla a un número de casilla (1-9)
+            int numCasilla = selectedRow + (selectedColumn * 3) - 2;
 
-        // Llamar a la función comprobar con los valores obtenidos
-        boolean resultado = controller.comprobar(juego, pokemonSeleccionado, numCasilla);
+            // Obtener el nombre del Pokémon seleccionado en el ComboBox
+            String pokemonSeleccionado = (String) comboBox.getSelectedItem();
 
-        // Mostrar el resultado en un mensaje (solo para propósitos de demostración)
-        JOptionPane.showMessageDialog(this,
-                "¿El Pokémon " + pokemonSeleccionado + " está en la casilla " + numCasilla + "? " +
-                        (resultado ? "Sí" : "No"));
+            //Estas seguro?
 
-        if (resultado) {
-            model.setValueAt(pokemonSeleccionado, selectedRow, selectedColumn);
-            numAciertos++;
-            int numTotal=anchoTabla*altoTabla;
+            // Llamar a la función comprobar con los valores obtenidos
+            boolean resultado = controller.comprobar(juego, pokemonSeleccionado, numCasilla);
 
-            if (numAciertos >= (numTotal)) {
-                JOptionPane.showMessageDialog(this,
-                "Has llenado los " + numTotal + " huecos de la Tabla \n HAS COMPLETADO EL POKEDOKU");
-            }
+            // Mostrar el resultado en un mensaje (solo para propósitos de demostración)
+            JOptionPane.showMessageDialog(this,
+                    "El Pokémon " + pokemonSeleccionado + (resultado ? " Sí" : " No") + " está en la casilla " + numCasilla);
 
-        // Actualizar la vista de la tabla
-        table.repaint(); 
+        
+                if (resultado) {
+                    model.setValueAt(pokemonSeleccionado, selectedRow, selectedColumn);
+                    numAciertos++;
+                    int numTotal=anchoTabla*altoTabla;
+
+                    if (numAciertos >= (numTotal)) {
+                        JOptionPane.showMessageDialog(this,
+                        "Has llenado los " + numTotal + " huecos de la Tabla \n HAS COMPLETADO EL POKEDOKU");
+                    }
+
+                // Actualizar la vista de la tabla
+                table.repaint(); 
+                } else {
+                    numFallos++;
+                    fallos.setText("Fallos: " + numFallos);
+                    
+                }
         }
+
     }
 
 }
-
