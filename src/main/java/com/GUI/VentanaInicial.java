@@ -372,7 +372,7 @@ public class VentanaInicial extends JFrame{
 
             // Obtener el nombre del Pokémon seleccionado en el ComboBox
             String pokemonSeleccionado = (String) comboBox.getSelectedItem();
-
+            int idSeleccionado = 1;
             //Estas seguro?
 
             // Llamar a la función comprobar con los valores obtenidos
@@ -390,7 +390,13 @@ public class VentanaInicial extends JFrame{
 
                     if (selectedRow != -1) {
                         // Lógica para obtener la ruta de la imagen y el nombre
-                        String imagePath = "../sprites/icons/" + (selectedRow + 1) + ".png"; // Ruta de la imagen
+                        for (int i = 0; i < listapokemons.size(); i++) {
+                        
+                            if (pokemonSeleccionado.equals(listapokemons.get(i))) {
+                                idSeleccionado=i+1;
+                            }
+                        }
+                        String imagePath = "../sprites/icons/" + (idSeleccionado) + ".png"; // Ruta de la imagen
                         String imageName = pokemonSeleccionado; // Nombre de la imagen
             
                         // Crear ImageIcon y ImagePanel
