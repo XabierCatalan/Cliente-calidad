@@ -527,4 +527,55 @@ public boolean postPokemon(String nombre, String tipo1, String tipo2, String reg
         }
         return false;
     }
+
+//visualizar Usuarios
+    public List<String> getUsuarios(){
+        String apartado = BASE_URL + "/getUsuarios";
+
+        List<String> usuarios = new ArrayList<>();
+
+        try {
+
+
+            URL url = new URL(apartado);
+
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
+            con.setRequestMethod("GET");
+            int responseCode = con.getResponseCode();
+
+            if(responseCode == HttpURLConnection.HTTP_OK) {
+                // Success
+
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String response = bufferedReader.readLine();
+                
+            //System.out.println(response);
+
+            usuarios = convertJsonToArrayList(response);
+
+
+                bufferedReader.close();
+                return usuarios;
+            } else {
+                // Error
+                System.err.println("error en solicitud de GET usuarios");
+                return null;
+            }
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return usuarios;
+    }
+
+
+
+
+
+
 }
+
+

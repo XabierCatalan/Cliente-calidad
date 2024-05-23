@@ -26,7 +26,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 
 import com.Controller.VentanaInicialController;
-import com.GUI.VentanaAyuda;
 
 public class VentanaMenuInicial extends JFrame{
     JLabel pokedoku;
