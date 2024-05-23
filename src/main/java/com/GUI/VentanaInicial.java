@@ -51,7 +51,8 @@ public class VentanaInicial extends JFrame{
     JButton ayuda = new JButton("Ayuda");
     JButton listap = new JButton("listaPokemons");
     JButton aceptar = new JButton("Aceptar");
-   
+    JButton modoNoche;
+
     JButton rendirse;
     JTable table;
     DefaultTableModel model;
@@ -69,10 +70,11 @@ public class VentanaInicial extends JFrame{
     JLabel creditos;
     JLabel fallos;
 
+    boolean isModoNoche = false; 
+
     public VentanaInicial() {
 
-       initComponents();
-        
+        initComponents(); 
         setTitle("Pokedoku");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 800);
@@ -87,7 +89,7 @@ public class VentanaInicial extends JFrame{
         ayuda = new JButton("Ayuda");
         listap = new JButton("listaPokemons");
         aceptar = new JButton("Aceptar");
-       
+        modoNoche = new JButton("Modo Noche");
         rendirse = new JButton("Me rindo");
 
          // Crear la tabla
@@ -106,7 +108,7 @@ public class VentanaInicial extends JFrame{
         panel.add(listap);
         panel.add(aceptar);
         panel.add(rendirse);
-       
+        panel.add(modoNoche);
         panel.add(comboBox);
 
         parteAbajo = new JPanel();
@@ -159,6 +161,13 @@ public class VentanaInicial extends JFrame{
            }          
         });
 
+        modoNoche.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ActivarModoNoche();
+            }
+        });
+
         cp.add(panel, BorderLayout.NORTH);
         cp.add(scrollPane, BorderLayout.CENTER);
 
@@ -172,6 +181,31 @@ public class VentanaInicial extends JFrame{
             }
         });
 
+    }
+
+    private void ActivarModoNoche() {
+        isModoNoche = !isModoNoche;
+
+        Color backgroundColor = isModoNoche ? Color.DARK_GRAY : Color.WHITE;
+        Color foregroundColor = isModoNoche ? Color.WHITE : Color.BLACK;
+
+        getContentPane().setBackground(backgroundColor);
+        panel.setBackground(backgroundColor);
+        parteAbajo.setBackground(backgroundColor);
+        table.setBackground(backgroundColor);
+        table.setForeground(foregroundColor);
+        comboBox.setBackground(backgroundColor);
+        comboBox.setForeground(foregroundColor);
+
+        for (Component component : panel.getComponents()) {
+            if (component instanceof JButton) {
+                component.setBackground(backgroundColor);
+                component.setForeground(foregroundColor);
+            }
+        }
+
+        fallos.setForeground(foregroundColor);
+        creditos.setForeground(foregroundColor);
     }
     
     private void filterComboBoxItems(String filterText) {
