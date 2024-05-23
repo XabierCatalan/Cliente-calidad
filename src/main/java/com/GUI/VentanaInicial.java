@@ -289,16 +289,16 @@ public class VentanaInicial extends JFrame{
 
     private void reiniciarTablero() {
         juego = controller.crearJuego();
-        model.setRowCount(0); // Limpiar filas
-        model.setColumnCount(0); // Limpiar columnas
-    
-        // Recrear la tabla con las nuevas combinaciones
-        createJTable();
-        
-        scrollPane.setVisible(true);
 
-        // Actualizar la vista de la tabla
-        table.repaint();
+        // Actualizar las combinaciones en la tabla
+        int rowCount = model.getRowCount();
+        int columnCount = model.getColumnCount();
+        for (int i = 0; i < rowCount; i++) {
+            for (int j = 1; j < columnCount; j++) {
+                int numCasilla = i + (j * 3) - 2;
+                model.setValueAt(juego.get(numCasilla).get(0), i, j);
+            }
+        }
     }
 
     private void onAceptarButtonClick() {
