@@ -52,6 +52,7 @@ public class VentanaInicial extends JFrame{
     JButton listap = new JButton("listaPokemons");
     JButton aceptar = new JButton("Aceptar");
     JButton modoNoche;
+    JButton volverAJugar;
 
     JButton rendirse;
     JTable table;
@@ -87,11 +88,10 @@ public class VentanaInicial extends JFrame{
         cp.setLayout(new FlowLayout());
 
         ayuda = new JButton("Ayuda");
-        listap = new JButton("listaPokemons");
         aceptar = new JButton("Aceptar");
         modoNoche = new JButton("Modo Noche");
         rendirse = new JButton("Me rindo");
-
+        volverAJugar = new JButton("Volver a jugar");
          // Crear la tabla
         createJTable();
         
@@ -105,11 +105,11 @@ public class VentanaInicial extends JFrame{
         panel.setLayout(new FlowLayout());
 
         panel.add(ayuda);
-        panel.add(listap);
         panel.add(aceptar);
         panel.add(rendirse);
         panel.add(modoNoche);
         panel.add(comboBox);
+        panel.add(volverAJugar);
 
         parteAbajo = new JPanel();
         parteAbajo.setLayout(new GridLayout(2,1));
@@ -168,6 +168,19 @@ public class VentanaInicial extends JFrame{
             }
         });
 
+        volverAJugar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int response = JOptionPane.showConfirmDialog(null, "¿Quieres volver a jugar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                boolean result = (response == JOptionPane.YES_OPTION);
+
+                if (result) {
+                    reiniciarJuego();
+                } else {
+                    dispose();
+                }
+            }
+        });
         cp.add(panel, BorderLayout.NORTH);
         cp.add(scrollPane, BorderLayout.CENTER);
 
@@ -267,6 +280,25 @@ public class VentanaInicial extends JFrame{
         
     }
 
+    private void derrotaPorFallos() {
+        if (numFallos >= 3) {
+            reiniciarTablero();
+            JOptionPane.showMessageDialog(null, "Has perdido por exceder el límite de fallos (3). Se reinició el tablero.");
+        }
+    }
+
+    private void reiniciarTablero() {
+        juego = controller.crearJuego();
+        model.setRowCount(0); // Limpiar filas
+        model.setColumnCount(0); // Limpiar columnas
+    
+        // Recrear la tabla con las nuevas combinaciones
+        createJTable();
+    
+        // Actualizar la vista de la tabla
+        table.repaint();
+    }
+
     private void onAceptarButtonClick() {
         // Obtener el número de la casilla seleccionada (región en la tabla)
 
@@ -308,10 +340,43 @@ public class VentanaInicial extends JFrame{
                 } else {
                     numFallos++;
                     fallos.setText("Fallos: " + numFallos);
-                    
+                    derrotaPorFallos();
                 }
         }
 
     }
+
+    private void reiniciarJuego() {
+        numAciertos = 0;
+        numFallos = 0;
+        perder = true;
+        juego = controller.crearJuego();
+        condicionesTipo = (ArrayList<String>) controller.getCondicionesTipo();
+        condicionesRegion = (ArrayList<String>) controller.getCondicionesRegion();
+        fallos.setText("Fallos: " + numFallos);
+        
+        // Actualizar las columnas de la tabla
+        anchoTabla = condicionesTipo.size();
+        altoTabla = condicionesRegion.size();
+
+        String[][] data = new String[altoTabla][anchoTabla+1];
+        for (int i = 0; i < condicionesRegion.size(); i++) {
+            data[i][0] = condicionesRegion.get(i); 
+        }
+
+        String[] columnNames = new String[condicionesTipo.size()+1];
+        Arrays.fill(columnNames, "");
+        int cont = 1;
+        for (String t : condicionesTipo) {
+            columnNames[cont]=t;
+            cont++;
+        }
+        
+        model.setDataVector(data, columnNames);
+        
+        // Actualizar la vista de la tabla
+        table.repaint(); 
+    }
+
 
 }
