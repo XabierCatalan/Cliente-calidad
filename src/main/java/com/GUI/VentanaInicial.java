@@ -404,7 +404,7 @@ public class VentanaInicial extends JFrame{
                         ImagePanel panel = new ImagePanel(imageName, icon);
             
                         // Actualizar el valor en la tercera columna de la fila seleccionada
-                        table.getModel().setValueAt(panel, selectedRow, 2);
+                        table.getModel().setValueAt(panel, selectedRow, selectedColumn);
                     }
 
                     if (numAciertos >= (numTotal)) {
