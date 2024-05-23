@@ -294,7 +294,9 @@ public class VentanaInicial extends JFrame{
     
         // Recrear la tabla con las nuevas combinaciones
         createJTable();
-    
+        
+        scrollPane.setVisible(true);
+
         // Actualizar la vista de la tabla
         table.repaint();
     }
