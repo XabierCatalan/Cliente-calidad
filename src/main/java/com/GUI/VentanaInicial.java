@@ -189,6 +189,12 @@ public class VentanaInicial extends JFrame{
         Color backgroundColor = isModoNoche ? Color.DARK_GRAY : Color.WHITE;
         Color foregroundColor = isModoNoche ? Color.WHITE : Color.BLACK;
 
+        if (isModoNoche) {
+            modoNoche.setText("Modo Día");
+        } else {
+            modoNoche.setText("Modo Noche");
+        }
+
         getContentPane().setBackground(backgroundColor);
         panel.setBackground(backgroundColor);
         parteAbajo.setBackground(backgroundColor);
