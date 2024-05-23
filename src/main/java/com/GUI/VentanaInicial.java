@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -21,8 +23,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import org.springframework.data.geo.Point;
 
@@ -264,20 +268,72 @@ public class VentanaInicial extends JFrame{
         
         model = new DefaultTableModel(data, columnNames) {
             @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Hacer que todas las celdas sean no editables
+            public Class<?> getColumnClass(int column) {
+                if (column != 0) {
+                    return ImagePanel.class;
+                }
+                return super.getColumnClass(column);
             }
         };
 
         // Crear la tabla con el modelo no editable
         table = new JTable(model);
+        table.setRowHeight(100);
 
+        TableColumn imageColumn1 = table.getColumnModel().getColumn(1);
+        imageColumn1.setPreferredWidth(200);
+        TableColumn imageColumn2 = table.getColumnModel().getColumn(2);
+        imageColumn2.setPreferredWidth(200);
+        TableColumn imageColumn3 = table.getColumnModel().getColumn(3);
+        imageColumn3.setPreferredWidth(200);
+
+        imageColumn1.setCellRenderer(new ImageRenderer());
+        imageColumn2.setCellRenderer(new ImageRenderer());
+        imageColumn3.setCellRenderer(new ImageRenderer());
 
         // Agregar la tabla a un JScrollPane para que tenga barras de desplazamiento
         scrollPane = new JScrollPane(table);
+    }
 
-        
-        
+    private static ImageIcon createImageIcon(String path) {
+        java.net.URL imgURL = VentanaInicial.class.getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL);
+        } else {
+            System.err.println("No se encontró el archivo de imagen: " + path);
+            return null;
+        }
+    }
+
+    static class ImagePanel extends JPanel {
+        private JLabel nameLabel;
+        private JLabel imageLabel;
+
+        public ImagePanel(String name, ImageIcon icon) {
+            setLayout(new BorderLayout());
+            nameLabel = new JLabel(name, SwingConstants.CENTER);
+            imageLabel = new JLabel(icon, SwingConstants.CENTER);
+            add(imageLabel, BorderLayout.CENTER);
+            add(nameLabel, BorderLayout.SOUTH);
+        }
+
+        @Override
+        public Dimension getPreferredSize() {
+            return new Dimension(200, 150); // Tamaño mínimo para el ImagePanel
+        }
+    }
+
+    // Renderizador de celdas personalizado para mostrar imágenes y nombres
+    static class ImageRenderer extends DefaultTableCellRenderer {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            if (value instanceof ImagePanel) {
+                return (ImagePanel) value; // Devolver directamente el ImagePanel
+            } else {
+                // Devolver un componente vacío si el valor no es un ImagePanel
+                return new JLabel(); // Devolver un JLabel vacío
+            }
+        }
     }
 
     private void derrotaPorFallos() {
@@ -331,6 +387,19 @@ public class VentanaInicial extends JFrame{
                     model.setValueAt(pokemonSeleccionado, selectedRow, selectedColumn);
                     numAciertos++;
                     int numTotal=anchoTabla*altoTabla;
+
+                    if (selectedRow != -1) {
+                        // Lógica para obtener la ruta de la imagen y el nombre
+                        String imagePath = "../sprites/icons/" + (selectedRow + 1) + ".png"; // Ruta de la imagen
+                        String imageName = pokemonSeleccionado; // Nombre de la imagen
+            
+                        // Crear ImageIcon y ImagePanel
+                        ImageIcon icon = createImageIcon(imagePath);
+                        ImagePanel panel = new ImagePanel(imageName, icon);
+            
+                        // Actualizar el valor en la tercera columna de la fila seleccionada
+                        table.getModel().setValueAt(panel, selectedRow, 2);
+                    }
 
                     if (numAciertos >= (numTotal)) {
                         JOptionPane.showMessageDialog(this,
